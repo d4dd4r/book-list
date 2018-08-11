@@ -1,0 +1,54 @@
+.field {
+  outline: none;
+  border: thin solid #7E827E;
+  border-radius: 3px;
+  padding: 5px;
+  height: 26px;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  background-color: transparent;
+}
+
+.label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: monospace;
+  font-size: 16px;
+  transform: translate(14px, 18px);
+  transition: transform .4s ease-in-out;
+  z-index: -1;
+  color: rgba(0, 0, 0, .65);
+}
+
+.field:focus {
+  border-color: #C3E790;
+}
+
+.field:focus[value=""] + .label,
+.field:not([value=""]) + .label {
+  transform: translate(6px, -6px);
+  font-weight: bold;
+  color: #C3E790;
+}
+
+.field.invalid:focus,
+.invalid {
+  border: solid thin red;
+  box-shadow: 0 2px 3px salmon;
+}
+
+.field.invalid:focus[value=""] + .label,
+.field.invalid:not([value=""]) + .label,
+.field.invalid + .label {
+  color: salmon;
+}
+
+.tooltip {
+  color: salmon;
+  font-size: 80%;
+  position: absolute;
+  right: 5%;
+  top: 19px;
+}
