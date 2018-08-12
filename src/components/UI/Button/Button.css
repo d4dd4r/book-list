@@ -1,12 +1,12 @@
 .button {
   background-color: transparent;
   border: none;
-  color: white;
   outline: none;
   cursor: pointer;
   font: inherit;
   padding: 10px 20px;
   font-weight: bold;
+  box-shadow: 0 2px 3px #DDDDDD;
 }
 
 .button:disabled {

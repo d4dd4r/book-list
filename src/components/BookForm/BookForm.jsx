@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import { VALIDATORS, checkValidity } from '../../tools/validation';
+import { checkValidity } from '../../tools/validation';
+import BookService from '../../services/BookService';
+import { Book, getInitialStateFields } from '../../modeles/Book';
 import Input from '../UI/Form/Input/Input';
 import Button from '../UI/Button/Button';
 import styles from './BookForm.css';
@@ -8,61 +10,36 @@ import styles from './BookForm.css';
 export default class BookForm extends Component {
   state = {
     form: {
-      fields: {
-        label: {
-          label: 'Label',
-          value: '',
-          validation: [
-            { type: VALIDATORS.REQUIRED },
-          ],
-          valid: false,
-          blurred: false,
-        },
-        author: {
-          label: 'Author',
-          value: '',
-          validation: [
-            { type: VALIDATORS.REQUIRED },
-          ],
-          valid: false,
-          blurred: false,
-        },
-        publication: {
-          label: 'Publication date',
-          type: 'number',
-          value: '',
-          validation: [
-            { type: VALIDATORS.REQUIRED },
-            { type: VALIDATORS.MIN_LENGTH, val: 4 },
-            { type: VALIDATORS.MAX_LENGTH, val: 4 },
-          ],
-          valid: false,
-          blurred: false,
-        },
-        pageCount: {
-          label: 'Page count',
-          type: 'number',
-          value: '',
-          validation: [
-            { type: VALIDATORS.REQUIRED },
-            { type: VALIDATORS.MIN_LENGTH, val: 2 },
-            { type: VALIDATORS.MAX_LENGTH, val: 4 },
-          ],
-          valid: false,
-          blurred: false,
-        },
-      },
+      fields: {},
       valid: false,
     },
   };
 
-  isFormValid = fields => {
+  bookService = new BookService();
+  formEl = null;
+
+  shouldComponentUpdate() {
+    console.log('BookForm - Updated');
+    return true;
+  }
+
+  constructor(props) {
+    super(props);
+
+    const fields = getInitialStateFields(props.selectedBook);
+    this.state.form.fields = {
+      ...this.state.form.fields,
+      ...fields,
+    };
+    this.state.form.valid = this.isFormValid(this.state.form.fields);
+  }
+
+
+  isFormValid(fields) {
     let valid = true;
 
     Object.keys(fields).forEach(prop => {
-      if (!valid) {
-        return true;
-      }
+      if (!valid) return true;
 
       valid = valid && this.state.form.fields[prop].valid;
     });
@@ -96,6 +73,36 @@ export default class BookForm extends Component {
     this.setState({ form: updatedForm });
   };
 
+  onSubmit = e => {
+    e.preventDefault();
+
+    if (!this.state.form.valid) return;
+
+    const fields = this.state.form.fields;
+    const newBook = new Book(
+      fields.label.value,
+      fields.author.value,
+      fields.publication.value,
+      fields.pageCount.value,
+    );
+
+    this.bookService.saveBook(newBook);
+    this.formReset();
+  };
+
+  formReset() {
+    const form = { ...this.state.form };
+    form.valid = false;
+    form.fields = {
+      ...form.fields,
+      ...getInitialStateFields()
+    };
+
+    this.setState({
+      form
+    });
+  }
+
   renderFields = () => {
     const fields = this.state.form.fields;
 
@@ -114,17 +121,16 @@ export default class BookForm extends Component {
     ));
   };
 
-  onSubmit = e => {
-    e.preventDefault();
-  };
-
   render() {
     return (
       <div className={ styles.form }>
         <h4 className={ styles.header }>
           Add a book to the library
         </h4>
-        <form onSubmit={ this.onSubmit }>
+        <form
+          onSubmit={ this.onSubmit }
+          ref={ el => this.formEl = el }
+        >
           { this.renderFields() }
           <div className={ styles.control }>
             <Button

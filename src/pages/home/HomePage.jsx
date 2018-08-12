@@ -6,9 +6,16 @@ import BookForm from '../../components/BookForm/BookForm';
 class HomePage extends Component {
   state = {
     books: [],
-    selectedBook: null,
+    selectedBook: undefined,
     editMode: false,
   };
+
+  shouldComponentUpdate() {
+    console.log('HomePage - Updated');
+    return true;
+  }
+
+  // onBookEdit = (book)
 
   render() {
     return (
@@ -16,7 +23,7 @@ class HomePage extends Component {
         <div className={ styles.wrapper }>
           <div className={ styles.form }>
             <BookForm
-              book={ this.selectedBook }
+              selectedBook={ this.state.selectedBook }
               editMode={ this.state.editMode }
             />
           </div>

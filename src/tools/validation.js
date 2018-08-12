@@ -9,15 +9,15 @@ export const checkValidity = (value, rules = []) => {
 
   rules.forEach(rule => {
     if (isValid && rule.type === VALIDATORS.REQUIRED) {
-      isValid = value.trim() !== '';
+      isValid = String(value).trim() !== '';
     }
 
     if (isValid && rule.type === VALIDATORS.MIN_LENGTH) {
-      isValid = value.length >= rule.val;
+      isValid = String(value).length >= rule.val;
     }
 
     if (isValid && rule.type === VALIDATORS.MAX_LENGTH) {
-      isValid = value.length <= rule.val;
+      isValid = String(value).length <= rule.val;
     }
   });
 
