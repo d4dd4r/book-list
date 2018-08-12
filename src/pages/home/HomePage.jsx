@@ -42,6 +42,13 @@ class HomePage extends Component {
     this.bookService.removeBook(book);
   };
 
+  onFormReset = () => (
+    this.setState({
+      selectedBook: undefined,
+      editMode: false,
+    })
+  );
+
   render() {
     return (
       <div className={ styles.page }>
@@ -51,6 +58,7 @@ class HomePage extends Component {
               bookService={ this.bookService }
               selectedBook={ this.state.selectedBook }
               editMode={ this.state.editMode }
+              onFormReset={ this.onFormReset }
             />
           </div>
         </div>

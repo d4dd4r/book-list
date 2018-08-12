@@ -10,7 +10,7 @@
   padding: 15px;
   border: solid thin #EEE;
   box-shadow: 0 2px 3px #CCC;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .control {
@@ -18,4 +18,8 @@
   padding: 10px 5px;
   display: flex;
   justify-content: flex-end;
+}
+
+.button {
+  margin-right: 15px;
 }

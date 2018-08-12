@@ -20,7 +20,13 @@ export default class BookService {
     }
   }
 
-  saveBooks(books = []) {
+  _emit() {
+    if (!this.subscriber) return;
+
+    this.subscriber(BookService.getBooks());
+  }
+
+  _saveBooks(books = []) {
     localStorage.setItem(
       STORE_KEY, JSON.stringify(books)
     );
@@ -32,9 +38,10 @@ export default class BookService {
     if (!Book.isBook(book)) return;
 
     const books = BookService.getBooks();
-    books.push(book);
+    const index = books.findIndex(b => b.id === book.id);
 
-    this.saveBooks(books);
+    index === -1 ? books.push(book) : books[index] = book;
+    this._saveBooks(books);
   }
 
   removeBook(book) {
@@ -42,17 +49,10 @@ export default class BookService {
 
     const books = BookService.getBooks();
     const index = books.findIndex(b => b.id === book.id);
-    console.log('books', books);
-    console.log('book', book);
+
     if (index === -1) return;
 
     books.splice(index, 1);
-    this.saveBooks(books);
-  }
-
-  _emit() {
-    if (!this.subscriber) return;
-
-    this.subscriber(BookService.getBooks());
+    this._saveBooks(books);
   }
 }

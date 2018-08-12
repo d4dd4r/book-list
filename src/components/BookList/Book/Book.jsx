@@ -7,8 +7,8 @@ const book = ({ book, onEdit, onRemove }) => (
   <div className={ styles.wrapper }>
     <div className={ styles.book }>
       <div className={ styles.info }>
-        <p>{ book.author }</p>
-        <p>{ book.label }</p>
+        <p className={ styles.author }>{ book.author }</p>
+        <p className={ styles.label }>{ book.label }</p>
       </div>
       <div className={ styles.actions }>
         <Button
