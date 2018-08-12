@@ -14,11 +14,6 @@ export default class BookForm extends React.Component {
     },
   };
 
-  shouldComponentUpdate() {
-    console.log('BookForm - Updated');
-    return true;
-  }
-
   getFields = selectedBook => ({
     ...this.state.form.fields,
     ...getInitialStateFields(selectedBook),

@@ -1,21 +1,21 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { generateId } from '../../tools/generation';
 import Book from './Book/Book';
 import styles from './BookList.css';
 
-const bookList = ({
-  books, onEdit, onRemove,
-}) => {
-  console.log('BookList updated');
+class BookList extends Component {
+  shouldComponentUpdate(prevProps) {
+    return JSON.stringify(this.props.books) !== JSON.stringify(prevProps.books);
+  }
 
-  const renderBooks = () => books.length
-    ? books.map(book => (
+  renderBooks = () => this.props.books.length
+    ? this.props.books.map(book => (
       <Book
         key={ generateId() }
         book={ book }
-        onEdit={ onEdit }
-        onRemove={ onRemove }
+        onEdit={ this.props.onEdit }
+        onRemove={ this.props.onRemove }
       />
     ))
     : (
@@ -26,14 +26,16 @@ const bookList = ({
     )
   ;
 
-  return (
-    <div className={ styles.list }>
-      <h4 className={ styles.header }>
-        Library
-      </h4>
-      { renderBooks() }
-    </div>
-  );
-};
+  render() {
+    return (
+      <div className={ styles.list }>
+        <h4 className={ styles.header }>
+          Library
+        </h4>
+        { this.renderBooks() }
+      </div>
+    );
+  }
+}
 
-export default bookList;
+export default BookList;

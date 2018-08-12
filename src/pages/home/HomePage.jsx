@@ -23,11 +23,6 @@ class HomePage extends Component {
     this.state.books = BookService.getBooks();
   }
 
-  shouldComponentUpdate() {
-    console.log('HomePage - Updated');
-    return true;
-  }
-
   onBookEdit = book => {
     if (Book.isBook(book)) {
       this.setState({
@@ -38,7 +33,6 @@ class HomePage extends Component {
   };
 
   onBookRemove = book => {
-    console.log('onBookRemove', book);
     this.bookService.removeBook(book);
   };
 
