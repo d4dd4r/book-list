@@ -2,12 +2,16 @@ import { VALIDATORS, checkValidity } from '../tools/validation';
 import { generateId } from '../tools/generation';
 
 export class Book {
-  constructor(label = '', author = '', publication = '', pageCount = '') {
-    this.id = generateId();
-    this.label = label;
-    this.author = author;
-    this.publication = publication;
-    this.pageCount = pageCount;
+  static isBook(book) {
+    return book instanceof Book;
+  }
+
+  constructor(data = {}) {
+    this.id = data.id || generateId();
+    this.label = data.label || '';
+    this.author = data.author || '';
+    this.publication = data.publication || '';
+    this.pageCount = data.pageCount || '';
   }
 }
 

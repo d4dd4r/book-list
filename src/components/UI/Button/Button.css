@@ -6,16 +6,20 @@
   font: inherit;
   padding: 10px 20px;
   font-weight: bold;
-  box-shadow: 0 2px 3px #DDDDDD;
+  box-shadow: 0 2px 3px #DDD;
 }
 
 .button:disabled {
   cursor: not-allowed;
-  color: #ccc;
+  color: #CCC;
 }
 
 .success {
   color: #5C9210;
+}
+
+.primary {
+  color: #3993BD;
 }
 
 .danger {

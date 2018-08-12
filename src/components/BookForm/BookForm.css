@@ -10,6 +10,7 @@
   padding: 15px;
   border: solid thin #EEE;
   box-shadow: 0 2px 3px #CCC;
+  overflow-y: scroll;
 }
 
 .control {

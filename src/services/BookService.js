@@ -3,13 +3,21 @@ import { Book } from '../modeles/Book';
 const STORE_KEY = 'books';
 
 export default class BookService {
-  constructor(subscriber) {
-    this.subscriber = subscriber;
+  static getBooks() {
+    const books = JSON.parse(
+      localStorage.getItem(STORE_KEY)
+    );
+
+    return Array.isArray(books)
+      ? books.map(book => new Book(book))
+      : []
+    ;
   }
 
-  getBooks() {
-    const books = localStorage.getItem(STORE_KEY);
-    return books ? JSON.parse(books) : [];
+  constructor(subscriber) {
+    if (typeof subscriber === 'function') {
+      this.subscriber = subscriber;
+    }
   }
 
   saveBooks(books = []) {
@@ -21,18 +29,21 @@ export default class BookService {
   }
 
   saveBook(book) {
-    if (!(book instanceof Book)) return;
+    if (!Book.isBook(book)) return;
 
-    const books = this.getBooks();
+    const books = BookService.getBooks();
     books.push(book);
 
     this.saveBooks(books);
   }
 
-  removeBook(id) {
-    const books = this.getBooks();
-    const index = books.findIndex(book => book.id === id);
+  removeBook(book) {
+    if (!Book.isBook(book)) return;
 
+    const books = BookService.getBooks();
+    const index = books.findIndex(b => b.id === book.id);
+    console.log('books', books);
+    console.log('book', book);
     if (index === -1) return;
 
     books.splice(index, 1);
@@ -42,6 +53,6 @@ export default class BookService {
   _emit() {
     if (!this.subscriber) return;
 
-    this.subscriber(this.getBooks());
+    this.subscriber(BookService.getBooks());
   }
 }
